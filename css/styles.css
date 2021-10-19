@@ -1,22 +1,72 @@
 /* ---- reset ---- */
+* {
+  padding: 0;
+}
 body {
   font:normal 75% Arial, Helvetica, sans-serif;
   background: linear-gradient(45deg, rgba(0, 255, 87, 1), rgba(0, 255, 163, 0.51));
   box-sizing: border-box;
   background-position: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 #menu {
   position: absolute;
-  width: 50px;
-  height: 50px;
+  display: flex;
+  width: 30px;
+  height: 30px;
   left: 20px;
   top: 20px;
-  background: #FFFFFF;
-  border-radius: 15px;
+  background: transparent;
+  /* border: 2px solid white; */
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
+  filter: drop-shadow(5px 5px 3px rgba(0, 0, 0, 0.5));
 }
 
+#menu .burger {
+  position: absolute;
+  height: 3px;
+  width: 20px;
+  border-radius: 10px;
+  background: white;
+  transition: all 0.5s ease-in-out;
+}
+
+#menu .burger::before,
+#menu .burger::after {
+  content: '';
+  position: absolute;
+  height: 3px;
+  width: 20px;
+  border-radius: 10px;
+  background: white;
+  transition: all 0.5s ease-in-out;
+}
+
+#menu .burger::before {
+  transform: translateY(7px);
+}
+
+#menu .burger::after {
+  transform: translateY(-7px);
+}
+
+#menu.open .burger{
+  background: rgba(0, 255, 87, 1);
+}
+#menu.open .burger::before {
+  background: rgba(0, 255, 87, 1);
+  transform: rotate(45deg) scaleX(50%) translate(-8px, 8px);
+}
+#menu.open .burger::after {
+  background: rgba(0, 255, 87, 1);
+  transform: rotate(-45deg) scaleX(50%) translate(-8px, -8px);
+}
 #menu img {
   position: absolute;
   padding: 10px;
@@ -28,13 +78,13 @@ body {
   position: absolute;
   width: 200px;
   height: 500px;
-  left: 12px;
+  left: 10px;
   top: 10px;
   background: #FFFFFF;
   border: 1px solid #FFFFFF;
   box-sizing: border-box;
-  box-shadow: 11px 12px 4px rgb(0 0 0 / 25%);
-  border-radius: 25px;
+  box-shadow: 5px 5px 4px rgb(0 0 0 / 25%);
+  border-radius: 20px;
   padding: 100px 50px;
   transform: translateX(-250px);
   transition: 0.5s ease-in-out;
@@ -46,11 +96,12 @@ body {
 }
 
 .media-container {
-  position: relative;
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: auto;
   width: 300px;
   height: 400px;
   margin: 12% auto;
@@ -62,6 +113,10 @@ body {
 }
 
 .album {
+  background: url("/resources/wave.svg");
+  background-position: center;
+  background-size: 200%;
+  background-repeat: no-repeat;
   width: 100px;
   height: 100px;
   margin: 20px;
@@ -89,7 +144,8 @@ body {
   margin: 5px;
   padding: 5px;
   border-radius: 100%;
-  border: 0px;
+  border: 1px;
+  border-color: white;
   background: transparent;
   background-position: center;
 }
@@ -100,6 +156,15 @@ body {
 .play-btns .play {
   background-image: url("/resources/Play.svg");
 }
+.play-btns .pause {
+  background-image: url("/resources/Pause.svg");
+}
 .play-btns .next {
   background-image: url("/resources/Next.svg");
+}
+
+.time {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
 }
