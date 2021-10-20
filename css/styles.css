@@ -9,7 +9,9 @@ body {
   background-position: center;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
+  height: 100vh;
 }
 
 #menu {
@@ -26,6 +28,7 @@ body {
   align-items: center;
   cursor: pointer;
   filter: drop-shadow(5px 5px 3px rgba(0, 0, 0, 0.5));
+  z-index: 2;
 }
 
 #menu .burger {
@@ -88,6 +91,7 @@ body {
   padding: 100px 50px;
   transform: translateX(-250px);
   transition: 0.5s ease-in-out;
+  z-index: 1;
 }
 
 /* SLider effect */
@@ -101,49 +105,103 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: auto;
   width: 300px;
   height: 400px;
-  margin: 12% auto;
   align-self: center;
   border: 5px solid #FFFFFF;
-  box-sizing: border-box;
   filter: drop-shadow(5px 5px 4px rgba(0, 0, 0, 0.75));
   border-radius: 25px;
+  margin: 20px;
 }
 
+@keyframes animatedBackground {
+  from {
+    background-position: 0;
+  }
+  to {
+    background-position: 200%;
+  }
+}
+
+/* .album::before {
+  content: '';
+  position: absolute;
+  background: rgb(255, 0, 0);
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  filter: drop-shadow(0px 0px 25px rgba(0, 0, 0, 1));
+} */
 .album {
   background: url("/resources/wave.svg");
-  background-position: center;
   background-size: 200%;
-  background-repeat: no-repeat;
+  background-position: center;
+  background-repeat: repeat-x;
   width: 100px;
   height: 100px;
   margin: 20px;
   border-radius: 100%;
   border: 2px solid #FFFFFF;
+  filter: drop-shadow(5px 5px 2px 10px rgba(0, 0, 0, 0.2));
 }
 
-.progress {
-  display: inline-block;
+
+.album.animate {
+  animation: animatedBackground 5s linear infinite;
+  animation-play-state: paused;
+}
+
+.progressbar {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
   width: 50%;
   border-radius: 100px;
-  border: 2px solid #FFFFFF;
-  position: relative;
   margin: 20px;
 }
+.progressback {
+  width: 100%;
+  height: 6px;
+  border-radius: 100px;
+  background-color: white;
+  /* border: 2px solid #FFFFFF; */
+  position: absolute;
+  z-index: -1;
+}
+.head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+
+.progressfor {
+  position: absolute;
+  width: 90%;
+  height: 6px;
+  border-radius: 100px;
+  /* border: px solid red; */
+  background-color: rgba(0, 255, 163, 1);
+  box-shadow: 0.5px 0.5px 010px 0.5px grey;
+  position: relative;
+  z-index: 0;
+}
+
 
 .play-btns {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+
 }
 
 .button {
   width: 40px;
   height: 40px;
-  margin: 5px;
-  padding: 5px;
   border-radius: 100%;
+  margin: 8px;
+  margin-top: 15px;
   border: 1px;
   border-color: white;
   background: transparent;
@@ -156,9 +214,15 @@ body {
 .play-btns .play {
   background-image: url("/resources/Play.svg");
 }
+
+.play-state {
+  animation-play-state: running !important;
+}
+
 .play-btns .pause {
   background-image: url("/resources/Pause.svg");
 }
+
 .play-btns .next {
   background-image: url("/resources/Next.svg");
 }
@@ -167,4 +231,10 @@ body {
   width: 50%;
   display: flex;
   justify-content: space-between;
+  color: white;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 1));
+}
+
+.song-name {
+  color: white;
 }
