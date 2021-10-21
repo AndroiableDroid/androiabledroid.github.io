@@ -4,7 +4,8 @@
 }
 body {
   font:normal 75% Arial, Helvetica, sans-serif;
-  background: linear-gradient(45deg, rgba(0, 255, 87, 1), rgba(0, 255, 163, 0.51));
+  background: linear-gradient(60deg, rgba(0, 255, 87, 1), rgba(0, 255, 163, 0.51));
+  /* background: url("/resources/bg.png"); */
   box-sizing: border-box;
   background-position: center;
   display: flex;
@@ -84,7 +85,7 @@ body {
   left: 10px;
   top: 10px;
   background: #FFFFFF;
-  border: 1px solid #FFFFFF;
+  /* border: 1px solid #FFFFFF; */
   box-sizing: border-box;
   box-shadow: 5px 5px 4px rgb(0 0 0 / 25%);
   border-radius: 20px;
@@ -92,6 +93,9 @@ body {
   transform: translateX(-250px);
   transition: 0.5s ease-in-out;
   z-index: 1;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  background: rgba(255,255,255, 0.02);
+  backdrop-filter: blur(50px);
 }
 
 /* SLider effect */
@@ -108,10 +112,13 @@ body {
   width: 300px;
   height: 400px;
   align-self: center;
-  border: 5px solid #FFFFFF;
-  filter: drop-shadow(5px 5px 4px rgba(0, 0, 0, 0.75));
+  /* border: 5px solid #FFFFFF; */
+  /* filter: drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.5)); */
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
   border-radius: 25px;
   margin: 20px;
+  background: rgba(255,255,255, 0.02);
+  backdrop-filter: blur(50px);
 }
 
 @keyframes animatedBackground {
@@ -133,6 +140,7 @@ body {
   filter: drop-shadow(0px 0px 25px rgba(0, 0, 0, 1));
 } */
 .album {
+  background-color: rgba(255,255,25, 0.02) ;
   background: url("/resources/wave.svg");
   background-size: 200%;
   background-position: center;
@@ -141,15 +149,27 @@ body {
   height: 100px;
   margin: 20px;
   border-radius: 100%;
-  border: 2px solid #FFFFFF;
-  filter: drop-shadow(5px 5px 2px 10px rgba(0, 0, 0, 0.2));
-}
-
-
-.album.animate {
+  /* border: 2px solid #FFFFFF; */
+  /* background: ; */
+  box-shadow: inherit;
+  backdrop-filter: blur(10px);
   animation: animatedBackground 5s linear infinite;
   animation-play-state: paused;
+  /* filter: drop-shadow(5px 5px 2px 10px rgba(0, 0, 0, 0.2)); */
 }
+
+/* .album div {
+  background-position: center;
+  background-repeat: repeat-x;
+  position: absolute;
+  background: url("/resources/wave.svg");
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  filter: drop-shadow(0px 0px 25px rgba(0, 0, 0, 1));
+  animation: animatedBackground 5s linear infinite;
+  animation-play-state: paused;
+} */
 
 .progressbar {
   display: flex;
@@ -159,26 +179,23 @@ body {
   width: 50%;
   border-radius: 100px;
   margin: 20px;
+  cursor: pointer;
 }
 .progressback {
   width: 100%;
   height: 6px;
   border-radius: 100px;
+  box-shadow: inherit;
   background-color: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,1);
   /* border: 2px solid #FFFFFF; */
   position: absolute;
   z-index: -1;
 }
-.head {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  position: relative;
-}
 
 .progressfor {
   position: absolute;
-  width: 90%;
+  width: 0%;
   height: 6px;
   border-radius: 100px;
   /* border: px solid red; */
@@ -205,6 +222,11 @@ body {
   border: 1px;
   border-color: white;
   background: transparent;
+  background-position: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+  background: rgba(255,255,255, 0.05);
+  backdrop-filter: blur(10px);
+  background-repeat: no-repeat;
   background-position: center;
 }
 

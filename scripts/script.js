@@ -5,7 +5,8 @@ let prevbtn = document.querySelector(".previous");
 let nextbtn = document.querySelector(".next");
 let menu = document.getElementById('menu');
 let audio = document.getElementById('audio');
-let progress = document.querySelector('.progressfor');
+let progressfor = document.querySelector('.progressfor');
+let progress = document.querySelector('.progressbar');
 let album = document.querySelector('.album');
 let duration = document.querySelector('.tmright');
 let currentTime = document.querySelector('.tmleft');
@@ -51,6 +52,14 @@ function changePlaystate() {
 }
 playbtn.addEventListener('click', changePlaystate)
 
+progress.addEventListener('click', (e) => {
+    if (playbtn.className.search('pause') != -1) {
+    var _x = e.offsetX;
+    var dur = audio.duration;
+    audio.currentTime = (_x / progress.clientWidth) * dur;
+}
+})
+
 audio.addEventListener('timeupdate', (e) => {
     var tmp = audio.currentTime;
     var dur = audio.duration
@@ -60,10 +69,10 @@ audio.addEventListener('timeupdate', (e) => {
     if (sec < 10) sec = "0" + sec;
     currentTime.innerHTML= min + ":" + sec;
     var _progress = (tmp / dur) * 100;
-    progress.style.width = _progress + "%";
+    progressfor.style.width = _progress + "%";
     if (tmp == dur) {
         currentTime.innerHTML= "00:00";
-        progress.style.width = "0%"
+        progressfor.style.width = "0%"
         changePlaystate();
     }
 });
