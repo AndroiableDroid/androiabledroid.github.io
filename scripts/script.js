@@ -12,64 +12,100 @@ let duration = document.querySelector('.tmright');
 let currentTime = document.querySelector('.tmleft');
 let mediacontainer = document.querySelector('.media-container');
 let container = document.querySelector('.container');
-let list = 50;
+let list = 1;
+$(document).ready(function(){
+      $.getJSON("tracks/tracks.json", function(result){
+        $.each(result, function(field){
+            var song_name;
+            var album_name;
+            var artist;
+            var cover;
+            cover = 'url(' + result[field]['cover'] + ')';
+            song_name = result[field]['song'];
+            artist = result[field]['artist'];
+            album_name = result[field]['album'];
+            var Node = document.createElement('div');
+            Node.classList.add('track');
+            var Node2 = document.createElement('div');
+            Node.id = Node2.id ='track'+field+1;
+            Node2.classList.add('cover');
+            Node.appendChild(Node2);
+            var SongNode = document.createElement('div');
+            SongNode.classList.add('song');
+            var SongnameNode = document.createElement('div');
+            var mar1 = document.createElement('marquee');
+            mar1.innerHTML=song_name;
+            var AlbumnameNode = document.createElement('div');
+            var mar2 = document.createElement('marquee');
+            mar2.innerHTML = album_name;
+            AlbumnameNode.appendChild(mar2);
+            SongnameNode.appendChild(mar1);
+            SongNode.appendChild(SongnameNode);
+            SongNode.appendChild(AlbumnameNode);
+            Node.appendChild(SongNode);
+            slider.appendChild(Node);
+            document.querySelector('#track'+field+1).children.namedItem(['track'+field+1]).style.backgroundImage=cover;
+          });
+      });
+  });
 // let bg;
 
-async function loadTracks() {
-    var song_name;
-    var album_name;
-    var artist;
-    var cover;
-    for (let index = 0; index < list; index++) {
-        console.log(audio.src);
-        jsmediatags.read(audio.src, {
-            onSuccess: function (tag) {
-                try {
-                    // Array buffer to base64
-                    const data = tag.tags.picture.data;
-                    const format = tag.tags.picture.format;
-                    let base64String = "";
-                    for (let i = 0; i < data.length; i++) {
-                        base64String += String.fromCharCode(data[i]);
-                    }
-                    cover = 'url(data:' + format + ';base64,' + window.btoa(base64String) + ')';
-                    song_name = tag.tags.title;
-                    artist = tag.tags.artist;
-                    album_name = tag.tags.album;
-                } catch (error) {
-                    console.log(error);
-                    // picture.style.backgroundImage = 'url(music.jpg)';
-                    song_name = audio.src.substring((audio.src).lastIndexOf('/') + 1);
-                    artist = 'Unknown';
-                    album_name = 'Unknown';
-                }
-                var Node = document.createElement('div');
-                Node.classList.add('track');
-                var Node2 = document.createElement('div');
-                Node.id = Node2.id ='track'+index;
-                Node2.classList.add('cover');
-                Node.appendChild(Node2);
-                var SongNode = document.createElement('div');
-                SongNode.classList.add('song');
-                var SongnameNode = document.createElement('div');
-                var mar1 = document.createElement('marquee');
-                mar1.innerHTML=song_name;
-                var AlbumnameNode = document.createElement('div');
-                var mar2 = document.createElement('marquee');
-                mar2.innerHTML = album_name;
-                AlbumnameNode.appendChild(mar2);
-                SongnameNode.appendChild(mar1);
-                SongNode.appendChild(SongnameNode);
-                SongNode.appendChild(AlbumnameNode);
-                Node.appendChild(SongNode);
-                slider.appendChild(Node);
-                document.querySelector('#track'+index).children.namedItem(['track'+index]).style.backgroundImage=cover;
-            }
-        });
-    }
-}
+// async function loadTracks() {
+//     var song_name;
+//     var album_name;
+//     var artist;
+//     var cover;
+//     for (let index = 0; index < list; index++) {
+//         console.log(audio.src);
+//         jsmediatags.read(audio.src, {
+//             onSuccess: function (tag) {
+//                 try {
+//                     // Array buffer to base64
+//                     const data = tag.tags.picture.data;
+//                     const format = tag.tags.picture.format;
+//                     let base64String = "";
+//                     for (let i = 0; i < data.length; i++) {
+//                         base64String += String.fromCharCode(data[i]);
+//                     }
+//                     cover = 'url(data:' + format + ';base64,' + window.btoa(base64String) + ')';
+//                     console.log(cover);
+//                     song_name = tag.tags.title;
+//                     artist = tag.tags.artist;
+//                     album_name = tag.tags.album;
+//                 } catch (error) {
+//                     console.log(error);
+//                     // picture.style.backgroundImage = 'url(music.jpg)';
+//                     song_name = audio.src.substring((audio.src).lastIndexOf('/') + 1);
+//                     artist = 'Unknown';
+//                     album_name = 'Unknown';
+//                 }
+//                 var Node = document.createElement('div');
+//                 Node.classList.add('track');
+//                 var Node2 = document.createElement('div');
+//                 Node.id = Node2.id ='track'+index;
+//                 Node2.classList.add('cover');
+//                 Node.appendChild(Node2);
+//                 var SongNode = document.createElement('div');
+//                 SongNode.classList.add('song');
+//                 var SongnameNode = document.createElement('div');
+//                 var mar1 = document.createElement('marquee');
+//                 mar1.innerHTML=song_name;
+//                 var AlbumnameNode = document.createElement('div');
+//                 var mar2 = document.createElement('marquee');
+//                 mar2.innerHTML = album_name;
+//                 AlbumnameNode.appendChild(mar2);
+//                 SongnameNode.appendChild(mar1);
+//                 SongNode.appendChild(SongnameNode);
+//                 SongNode.appendChild(AlbumnameNode);
+//                 Node.appendChild(SongNode);
+//                 slider.appendChild(Node);
+//                 document.querySelector('#track'+index).children.namedItem(['track'+index]).style.backgroundImage=cover;
+//             }
+//         });
+//     }
+// }
 
-window.onload = loadTracks();
+// window.onload = loadTracks();
 // document.body.onload = async function() {
 //     let response = await fetch('https://source.unsplash.com/user/mvds/1920x1080', {method: "GET", headers: {"Content-type": "application/json;charset=UTF-8"}}).then(data => {
 //         return data.blob()

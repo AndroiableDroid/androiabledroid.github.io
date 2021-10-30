@@ -34,4 +34,9 @@ jobs:
       - name: Update Tracks
         run: |
           pip install stagger
-          source update.sh
+          python update.py
+          git config --global user.email "mohd.faraz.abc@gmail.com"
+          git config --global user.name "Mohd Faraz"
+          git add .
+          git commit -s -m "new songs added"
+          git push
