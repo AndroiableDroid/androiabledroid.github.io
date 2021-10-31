@@ -12,14 +12,20 @@ let duration = document.querySelector('.tmright');
 let currentTime = document.querySelector('.tmleft');
 let mediacontainer = document.querySelector('.media-container');
 let container = document.querySelector('.container');
-let list = 1;
+let songContainer = document.querySelector('.song-name');
+
+let totalcnt = 0;
+let currentTrack = 0;
 $(document).ready(function(){
       $.getJSON("tracks/tracks.json", function(result){
         $.each(result, function(field){
+            totalcnt++;
             var song_name;
             var album_name;
             var artist;
             var cover;
+            var srcNode = document.createElement('source');
+            srcNode.src = result[field]['file'];
             cover = 'url(' + result[field]['cover'] + ')';
             song_name = result[field]['song'];
             artist = result[field]['artist'];
@@ -27,7 +33,7 @@ $(document).ready(function(){
             var Node = document.createElement('div');
             Node.classList.add('track');
             var Node2 = document.createElement('div');
-            Node.id = Node2.id ='track'+field+1;
+            Node.id  ='track'+field;
             Node2.classList.add('cover');
             Node.appendChild(Node2);
             var SongNode = document.createElement('div');
@@ -43,93 +49,13 @@ $(document).ready(function(){
             SongNode.appendChild(SongnameNode);
             SongNode.appendChild(AlbumnameNode);
             Node.appendChild(SongNode);
+            Node.appendChild(srcNode);
             slider.appendChild(Node);
-            document.querySelector('#track'+field+1).children.namedItem(['track'+field+1]).style.backgroundImage=cover;
+            document.querySelector('#track'+field).children[0].style.backgroundImage=cover;
           });
       });
   });
-// let bg;
 
-// async function loadTracks() {
-//     var song_name;
-//     var album_name;
-//     var artist;
-//     var cover;
-//     for (let index = 0; index < list; index++) {
-//         console.log(audio.src);
-//         jsmediatags.read(audio.src, {
-//             onSuccess: function (tag) {
-//                 try {
-//                     // Array buffer to base64
-//                     const data = tag.tags.picture.data;
-//                     const format = tag.tags.picture.format;
-//                     let base64String = "";
-//                     for (let i = 0; i < data.length; i++) {
-//                         base64String += String.fromCharCode(data[i]);
-//                     }
-//                     cover = 'url(data:' + format + ';base64,' + window.btoa(base64String) + ')';
-//                     console.log(cover);
-//                     song_name = tag.tags.title;
-//                     artist = tag.tags.artist;
-//                     album_name = tag.tags.album;
-//                 } catch (error) {
-//                     console.log(error);
-//                     // picture.style.backgroundImage = 'url(music.jpg)';
-//                     song_name = audio.src.substring((audio.src).lastIndexOf('/') + 1);
-//                     artist = 'Unknown';
-//                     album_name = 'Unknown';
-//                 }
-//                 var Node = document.createElement('div');
-//                 Node.classList.add('track');
-//                 var Node2 = document.createElement('div');
-//                 Node.id = Node2.id ='track'+index;
-//                 Node2.classList.add('cover');
-//                 Node.appendChild(Node2);
-//                 var SongNode = document.createElement('div');
-//                 SongNode.classList.add('song');
-//                 var SongnameNode = document.createElement('div');
-//                 var mar1 = document.createElement('marquee');
-//                 mar1.innerHTML=song_name;
-//                 var AlbumnameNode = document.createElement('div');
-//                 var mar2 = document.createElement('marquee');
-//                 mar2.innerHTML = album_name;
-//                 AlbumnameNode.appendChild(mar2);
-//                 SongnameNode.appendChild(mar1);
-//                 SongNode.appendChild(SongnameNode);
-//                 SongNode.appendChild(AlbumnameNode);
-//                 Node.appendChild(SongNode);
-//                 slider.appendChild(Node);
-//                 document.querySelector('#track'+index).children.namedItem(['track'+index]).style.backgroundImage=cover;
-//             }
-//         });
-//     }
-// }
-
-// window.onload = loadTracks();
-// document.body.onload = async function() {
-//     let response = await fetch('https://source.unsplash.com/user/mvds/1920x1080', {method: "GET", headers: {"Content-type": "application/json;charset=UTF-8"}}).then(data => {
-//         return data.blob()
-//     });
-//     var reader = new FileReader();
-//     reader.readAsDataURL(response);
-//     reader.onloadend = async () => {
-//         this.bg = reader.result;
-//         document.body.style.backgroundImage = "url('"+this.bg+"')";
-//         // console.log(bg);
-//         image = new SimpleImage(this.bg);
-//     }
-//     console.log(bg);
-// };
-
-audio.onloadedmetadata = function () {
-    var tmp = audio.duration;
-    var min = tmp / 60 | 0;
-    if (min < 10) min = "0" + min;
-    var sec = tmp % 60 | 0;
-    if (sec < 10) sec = "0" + sec;
-    duration.innerHTML = min + ":" + sec;
-    console.log(audio.duration)
-};
 let mShowing = false;
 menu.addEventListener('click', () => {
     if (!mShowing) {
@@ -143,25 +69,63 @@ menu.addEventListener('click', () => {
     mShowing = !mShowing;
 });
 
-function changePlaystate() {
+function changePlaystate(e) {
     var data = playbtn.className;
-    if (data.search('pause') == -1) {
+    // console.log(e.target.className.search('next'));
+    if (data.search('pause') == -1
+        || e.target.className.search('next') != -1
+        || e.target.className.search('prev') != -1) {
         playbtn.classList.remove('play');
         playbtn.classList.add('pause');
         // album.classList.add('animate');
 
-        album.classList.add('play-state')
-        audio.play()
+        album.classList.add('play-state');
+        audio.play();
+        
+        var tmp = audio.duration;
+        var min = tmp / 60 | 0;
+        if (min < 10) min = "0" + min;
+        var sec = tmp % 60 | 0;
+        if (sec < 10) sec = "0" + sec;
+        duration.innerHTML = min + ":" + sec;
+        songContainer.children[0].innerHTML=document.querySelector('#track' + currentTrack).children[1].children[0].children[0].innerHTML;
+        // document.querySelector('#track' + currentTrack).children[0].style.animation = "rotateCover 3s linear infinite running";
 
     } else {
         playbtn.classList.remove('pause');
         playbtn.classList.add('play');
         // album.classList.remove('animate');
         album.classList.remove('play-state');
-        audio.pause()
+        // document.querySelector('#track' + currentTrack).children[0].style.animation = "none";
+        audio.pause();
     }
 }
 playbtn.addEventListener('click', changePlaystate)
+
+function loadAud() {
+    audio.load();
+    audio.pause();
+}
+
+nextbtn.addEventListener('click', (e) => {
+    currentTrack +=1;
+    if (currentTrack >= totalcnt)
+        currentTrack = 0;
+    var name = document.querySelector('#track'+currentTrack).children[2].src;
+    audio.src = '/tracks/' + name.substring(name.lastIndexOf('/') + 1);
+    loadAud();
+    changePlaystate(e);
+});
+
+prevbtn.addEventListener('click', (e) => {
+    currentTrack -=1;
+    if (currentTrack < 0)
+        currentTrack = totalcnt - 1;
+    var name = document.querySelector('#track'+currentTrack).children[2].src;
+    audio.src = '/tracks/' + name.substring(name.lastIndexOf('/') + 1);
+    loadAud();
+    changePlaystate(e);
+});
 
 progress.addEventListener('click', (e) => {
     if (playbtn.className.search('pause') != -1) {

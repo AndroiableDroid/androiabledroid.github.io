@@ -14,6 +14,7 @@ for i in onlyfiles:
 
 		datauri = "data:{};base64,{}".format(metadata['APIC'][0].mime,str(base64.b64encode(image_data))[2:-1])
 		item = {
+				"file": str("tracks/" + i),
 				"cover": str(datauri),
 				"album": str(metadata.album),
 				"song": str(metadata.title),
