@@ -31,5 +31,5 @@ jobs:
           git config --global user.email "mohd.faraz.abc@gmail.com"
           git config --global user.name "Mohd Faraz"
           git add .
-          git commit -s -m "new songs added"
+          git commit -s -m "new songs added" 2&> /dev/null
           git push
