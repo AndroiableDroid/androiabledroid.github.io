@@ -350,3 +350,13 @@ body {
 .song-name {
   color: white;
 }
+
+@media only screen and (max-width: 720px) {
+  body {
+    background: url('https://source.unsplash.com/1600x900/?music/720x1080');
+  }
+
+  .media-container {
+    transition: all 0.25s linear;
+  }
+}

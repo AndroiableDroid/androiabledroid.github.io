@@ -61,10 +61,12 @@ menu.addEventListener('click', () => {
     if (!mShowing) {
         slider.classList.add("translate");
         menu.classList.add('open');
+        mediacontainer.style.transform = "translateX(200px)";
     }
     else {
         slider.classList.remove("translate");
         menu.classList.remove('open');
+        mediacontainer.style.transform = "translateX(0px)";
     }
     mShowing = !mShowing;
 });
