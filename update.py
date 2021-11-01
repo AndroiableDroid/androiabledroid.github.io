@@ -10,17 +10,26 @@ data = []
 for i in onlyfiles:
 	if i != "tracks.json":
 		metadata = stagger.read_tag("tracks/" + i)
-		image_data = metadata['APIC'][0].data
-
-		datauri = "data:{};base64,{}".format(metadata['APIC'][0].mime,str(base64.b64encode(image_data))[2:-1])
 		item = {
-				"file": str("tracks/" + i),
-				"cover": str(datauri),
-				"album": str(metadata.album),
-				"song": str(metadata.title),
-				"artist": str(metadata.artist)
-			}
-
-		data.append(item)
+			"file": str("tracks/" + i),
+			"cover": "",
+			"album": str(metadata.album),
+			"song": str(metadata.title),
+			"artist": str(metadata.artist)
+		}
+		try:
+			image_data = metadata['APIC'][0].data
+			datauri = "data:{};base64,{}".format(metadata['APIC'][0].mime,str(base64.b64encode(image_data))[2:-1])
+			item["cover"] = str(datauri)
+		except:
+			item["cover"] = "url(/resources/play.svg)"
+		finally:
+			if item["album"] == "":
+				item["album"] = "Unknown"
+			if item["artist"] == "":
+				item["artist"] = "Unknown"
+			if item["song"] == "":
+				item["song"] = str(i)
+			data.append(item)
 with open("tracks/tracks.json", "w") as outfile:
 	outfile.write(json.dumps(data, indent=4))
