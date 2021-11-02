@@ -1,7 +1,7 @@
 [
     {
         "file": "tracks/Arc North - Symphony (feat. Donna Tella) [NCS Release].mp3",
-        "cover": "url(/resources/play.svg)",
+        "cover": "/resources/Record.png",
         "album": "Unknown",
         "song": "Arc North - Symphony (feat. Donna Tella) [NCS Release].mp3",
         "artist": "Unknown"
@@ -15,9 +15,9 @@
     },
     {
         "file": "tracks/Dirty Palm - Ropes (feat. Chandler Jewels) [NCS Release].mp3",
-        "cover": "url(/resources/play.svg)",
+        "cover": "/resources/Record.png",
         "album": "Unknown",
-        "song": "Dirty Palm x Chandler Jewels - The Ropes MASTER",
+        "song": "Dirty Palm - Ropes (feat. Chandler Jewels) [NCS Release].mp3",
         "artist": "Unknown"
     }
 ]
