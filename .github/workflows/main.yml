@@ -26,10 +26,13 @@ jobs:
       - uses: actions/checkout@v2
       - name: Update Tracks
         run: |
-          pip install stagger
+          pip install audio-metadata
           python update.py
           git config --global user.email "mohd.faraz.abc@gmail.com"
           git config --global user.name "Mohd Faraz"
-          git add .
+          git add tracks/tracks.json
           git commit -s -m "new songs added"
+          git push
+          git add .
+          git commit -s -m "Remove Malicious unwanted files present in form of songs"
           git push
