@@ -130,7 +130,6 @@ body {
   border-radius: 100%;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('/resources/bg.png');
   transition: all 0.5s linear;
 }
 
@@ -151,6 +150,7 @@ body {
 .song {
   display: flex;
   flex-direction: column;
+  width: 170%;
   font-family: 'Courier New', Courier, monospace;
 }
 
@@ -164,7 +164,8 @@ body {
   box-shadow: inherit;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  cursor: pointer;
 }
 
 /* SLider effect */

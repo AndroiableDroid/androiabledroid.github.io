@@ -16,9 +16,9 @@ let songContainer = document.querySelector('.song-name');
 
 let totalcnt = 0;
 let currentTrack = 0;
-$(document).ready(function(){
-      $.getJSON("tracks/tracks.json", function(result){
-        $.each(result, function(field){
+$(document).ready(function () {
+    $.getJSON("tracks/tracks.json", function (result) {
+        $.each(result, function (field) {
             totalcnt++;
             var song_name;
             var album_name;
@@ -33,14 +33,14 @@ $(document).ready(function(){
             var Node = document.createElement('div');
             Node.classList.add('track');
             var Node2 = document.createElement('div');
-            Node.id  ='track'+field;
+            Node.id = 'track' + field;
             Node2.classList.add('cover');
             Node.appendChild(Node2);
             var SongNode = document.createElement('div');
             SongNode.classList.add('song');
             var SongnameNode = document.createElement('div');
             var mar1 = document.createElement('marquee');
-            mar1.innerHTML=song_name;
+            mar1.innerHTML = song_name;
             var AlbumnameNode = document.createElement('div');
             var mar2 = document.createElement('marquee');
             mar2.innerHTML = album_name;
@@ -50,11 +50,18 @@ $(document).ready(function(){
             SongNode.appendChild(AlbumnameNode);
             Node.appendChild(SongNode);
             Node.appendChild(srcNode);
+            Node.addEventListener('click', (e) => {
+                audio.src = result[field]['file'];
+                currentTrack = field;
+                changePlaystate(e);
+            });
             slider.appendChild(Node);
-            document.querySelector('#track'+field).children[0].style.backgroundImage=cover;
-          });
-      });
-  });
+            document.querySelector('#track' + field).children[0].style.backgroundImage = cover;
+            if (field == 0)
+                audio.src = srcNode.src;
+        });
+    });
+});
 
 let mShowing = false;
 menu.addEventListener('click', () => {
@@ -74,23 +81,24 @@ menu.addEventListener('click', () => {
 function changePlaystate(e) {
     var data = playbtn.className;
     // console.log(e.target.className.search('next'));
-    if (data.search('pause') == -1
-        || e.target.className.search('next') != -1
-        || e.target.className.search('prev') != -1) {
+    if (e.target.className.search('next') != -1
+        || e.target.className.search('prev') != -1
+        || e.target.className.search('track') != -1
+        || data.search('pause') == -1) {
         playbtn.classList.remove('play');
         playbtn.classList.add('pause');
         // album.classList.add('animate');
 
         album.classList.add('play-state');
         audio.play();
-        
+
         var tmp = audio.duration;
         var min = tmp / 60 | 0;
         if (min < 10) min = "0" + min;
         var sec = tmp % 60 | 0;
         if (sec < 10) sec = "0" + sec;
         duration.innerHTML = min + ":" + sec;
-        songContainer.children[0].innerHTML=document.querySelector('#track' + currentTrack).children[1].children[0].children[0].innerHTML;
+        songContainer.children[0].innerHTML = document.querySelector('#track' + currentTrack).children[1].children[0].children[0].innerHTML;
         // document.querySelector('#track' + currentTrack).children[0].style.animation = "rotateCover 3s linear infinite running";
 
     } else {
@@ -102,32 +110,55 @@ function changePlaystate(e) {
         audio.pause();
     }
 }
-playbtn.addEventListener('click', changePlaystate)
 
+function next(e) {
+    currentTrack += 1;
+    if (currentTrack >= totalcnt)
+        currentTrack = 0;
+    var name = document.querySelector('#track' + currentTrack).children[2].src;
+    audio.src = '/tracks/' + name.substring(name.lastIndexOf('/') + 1);
+    loadAud();
+    changePlaystate(e);
+}
+
+function prev(e) {
+    currentTrack -= 1;
+    if (currentTrack < 0)
+        currentTrack = totalcnt - 1;
+    var name = document.querySelector('#track' + currentTrack).children[2].src;
+    audio.src = '/tracks/' + name.substring(name.lastIndexOf('/') + 1);
+    loadAud();
+    changePlaystate(e);
+}
+
+window.addEventListener('keydown', (e) => {
+    console.log(e.code)
+    e.preventDefault();
+    if (e.code == "Space") {
+        changePlaystate(e);
+    }
+    if(e.code == "KeyN") {
+        next(e);
+    }
+    if (e.code == "KeyP") {
+        prev(e);
+    }
+})
+playbtn.addEventListener('click', changePlaystate)
+playbtn.addEventListener('keydown', (e) => {
+    if (e.keyCode == 32) {
+        e.preventDefault();
+        changePlaystate(e);
+    }
+})
 function loadAud() {
     audio.load();
     audio.pause();
 }
 
-nextbtn.addEventListener('click', (e) => {
-    currentTrack +=1;
-    if (currentTrack >= totalcnt)
-        currentTrack = 0;
-    var name = document.querySelector('#track'+currentTrack).children[2].src;
-    audio.src = '/tracks/' + name.substring(name.lastIndexOf('/') + 1);
-    loadAud();
-    changePlaystate(e);
-});
+nextbtn.addEventListener('click', next);
 
-prevbtn.addEventListener('click', (e) => {
-    currentTrack -=1;
-    if (currentTrack < 0)
-        currentTrack = totalcnt - 1;
-    var name = document.querySelector('#track'+currentTrack).children[2].src;
-    audio.src = '/tracks/' + name.substring(name.lastIndexOf('/') + 1);
-    loadAud();
-    changePlaystate(e);
-});
+prevbtn.addEventListener('click', prev);
 
 progress.addEventListener('click', (e) => {
     if (playbtn.className.search('pause') != -1) {
