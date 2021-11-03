@@ -60,7 +60,7 @@ $(document).ready(function () {
             document.querySelector('#track' + field).children[0].style.backgroundImage = cover;
             if (field == 0)
                 audio.src = srcNode.src;
-                audio.load();
+            audio.load();
         });
     });
 });
@@ -92,59 +92,51 @@ audio.addEventListener('loadeddata', () => {
 });
 
 function playstate(e) {
-    if (album.className.search('play-state') == -1)
-        return true
-    if (e.target.className.search('next') != -1)
-        return true
-    if (e.target.className.search('prev') != -1)
-        return true
-    if (e.type == 'keydown' && (e.code == 'KeyN' || e.code == 'KeyP'))
-        return true
+    if (album.className.search('play-state') == -1) return true
+    if (e.target.className.search('next') != -1)    return true
+    if (e.target.className.search('prev') != -1)    return true
+    if (e.type == 'keydown' && (e.code == 'KeyN' || e.code == 'KeyP'))  return true
     try {
-        if (e.target.parentElement.parentElement.className.search('tracker') != -1)
-            return true
-        if (e.target.parentElement.parentElement.className.search('song') != -1)
-            return true
+        if (e.target.parentElement.parentElement.className.search('tracker') != -1) return true
+        if (e.target.parentElement.parentElement.className.search('song') != -1)    return true
     }
-    catch (e) {
-        return false;
-    }
-    if (e.target.tagName == 'AUDIO')
-        return true
+    catch (e) { return false; }
+    if (e.target.tagName == 'AUDIO')    return true
     return false
-};
+}
 
 
 function changePlaystate(e) {
-    setTimeout(function(){
-    duration.innerHTML = dur_length;
-    let play = playstate(e);
-    if (play === true) {
-        playbtn.classList.remove('play');
-        playbtn.classList.add('pause');
-        // album.classList.add('animate');
-        
-        album.classList.add('play-state');
-        audio.play();
-        
-        songContainer.children[0].innerHTML = document.querySelector('#track' + currentTrack).children[1].children[0].children[0].innerHTML;
-        // document.querySelector('#track' + currentTrack).children[0].style.animation = "rotateCover 3s linear infinite running";
+    setTimeout(function () {
+        duration.innerHTML = dur_length;
+        let play = playstate(e);
+        if (play === true) {
+            playbtn.classList.remove('play');
+            playbtn.classList.add('pause');
+            // album.classList.add('animate');
 
-    } else {
-        playbtn.classList.remove('pause');
-        playbtn.classList.add('play');
-        // album.classList.remove('animate');
-        album.classList.remove('play-state');
-        // document.querySelector('#track' + currentTrack).children[0].style.animation = "none";
-        audio.pause();
-    }}, 100);
+            album.classList.add('play-state');
+            audio.play();
+
+            songContainer.children[0].innerHTML = document.querySelector('#track' + currentTrack).children[1].children[0].children[0].innerHTML;
+            // document.querySelector('#track' + currentTrack).children[0].style.animation = "rotateCover 3s linear infinite running";
+
+        } else {
+            playbtn.classList.remove('pause');
+            playbtn.classList.add('play');
+            // album.classList.remove('animate');
+            album.classList.remove('play-state');
+            // document.querySelector('#track' + currentTrack).children[0].style.animation = "none";
+            audio.pause();
+        }
+    }, 100);
 }
 
 function next(e) {
     currentTrack += 1;
     if (currentTrack >= totalcnt)
-    currentTrack = 0;
-        var name = document.querySelector('#track' + currentTrack).children[2].src;
+        currentTrack = 0;
+    var name = document.querySelector('#track' + currentTrack).children[2].src;
     audio.src = '/tracks/' + name.substring(name.lastIndexOf('/') + 1);
     audio.load();
     changePlaystate(e);
