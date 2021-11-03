@@ -30,6 +30,7 @@ $(document).ready(function () {
             cover = 'url(' + result[field]['cover'] + ')';
             song_name = result[field]['song'];
             artist = result[field]['artist'];
+            srcNode.innerText = artist;
             album_name = result[field]['album'];
             var Node = document.createElement('div');
             Node.classList.add('track');
@@ -119,6 +120,9 @@ function changePlaystate(e) {
             audio.play();
 
             songContainer.children[0].innerHTML = document.querySelector('#track' + currentTrack).children[1].children[0].children[0].innerHTML;
+            songContainer.children[1].innerHTML = document.querySelector('#track' + currentTrack).children[2].innerText;
+            if (songContainer.children[1].innerHTML == "Unknown")
+                songContainer.children[1].innerHTML = ""
             // document.querySelector('#track' + currentTrack).children[0].style.animation = "rotateCover 3s linear infinite running";
 
         } else {

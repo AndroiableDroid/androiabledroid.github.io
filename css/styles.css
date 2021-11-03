@@ -5,6 +5,11 @@
   box-sizing: border-box;
 }
 
+marquee{
+  width: 100%;
+  direction: ltr;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
@@ -156,6 +161,10 @@ body {
   font-family: 'Courier New', Courier, monospace;
 }
 
+source {
+  display: none;
+}
+
 .track {
   padding: 5px 5px;
   background: inherit;
@@ -263,8 +272,6 @@ body {
 .progressbar {
   display: flex;
   position: relative;
-  flex-direction: column;
-  justify-content: center;
   width: 50%;
   border-radius: 100px;
   margin: 20px;
@@ -351,6 +358,10 @@ body {
 }
 
 .song-name {
+  display: flex;
+  flex-direction: column;
+  justify-items: flex-start;
+  align-items: center;
   color: white;
 }
 
