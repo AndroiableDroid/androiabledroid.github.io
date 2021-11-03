@@ -16,6 +16,7 @@ let songContainer = document.querySelector('.song-name');
 
 let totalcnt = 0;
 let currentTrack = 0;
+let dur_length = "";
 $(document).ready(function () {
     $.getJSON("tracks/tracks.json", function (result) {
         $.each(result, function (field) {
@@ -79,6 +80,17 @@ menu.addEventListener('click', () => {
     mShowing = !mShowing;
 });
 
+audio.addEventListener('loadeddata', () => {
+
+    // if (playbtn.className.search('pause') == -1) return;
+    var tmp = audio.duration;
+    var min = tmp / 60 | 0;
+    if (min < 10) min = "0" + min;
+    var sec = tmp % 60 | 0;
+    if (sec < 10) sec = "0" + sec;
+    dur_length = min + ":" + sec;
+});
+
 function playstate(e) {
     if (album.className.search('play-state') == -1)
         return true
@@ -97,30 +109,24 @@ function playstate(e) {
     catch (e) {
         return false;
     }
+    if (e.target.tagName == 'AUDIO')
+        return true
     return false
 };
 
-audio.addEventListener('loadeddata', () => {
-    var tmp = audio.duration;
-    var min = tmp / 60 | 0;
-    if (min < 10) min = "0" + min;
-    var sec = tmp % 60 | 0;
-    if (sec < 10) sec = "0" + sec;
-    duration.innerHTML = min + ":" + sec;
-});
 
 function changePlaystate(e) {
-    // console.log(e.target.parentElement.parentElement);
-    // console.log(e.target.className.search('next'));
+    setTimeout(function(){
+    duration.innerHTML = dur_length;
     let play = playstate(e);
     if (play === true) {
         playbtn.classList.remove('play');
         playbtn.classList.add('pause');
         // album.classList.add('animate');
-
+        
         album.classList.add('play-state');
         audio.play();
-
+        
         songContainer.children[0].innerHTML = document.querySelector('#track' + currentTrack).children[1].children[0].children[0].innerHTML;
         // document.querySelector('#track' + currentTrack).children[0].style.animation = "rotateCover 3s linear infinite running";
 
@@ -131,14 +137,14 @@ function changePlaystate(e) {
         album.classList.remove('play-state');
         // document.querySelector('#track' + currentTrack).children[0].style.animation = "none";
         audio.pause();
-    }
+    }}, 100);
 }
 
 function next(e) {
     currentTrack += 1;
     if (currentTrack >= totalcnt)
-        currentTrack = 0;
-    var name = document.querySelector('#track' + currentTrack).children[2].src;
+    currentTrack = 0;
+        var name = document.querySelector('#track' + currentTrack).children[2].src;
     audio.src = '/tracks/' + name.substring(name.lastIndexOf('/') + 1);
     audio.load();
     changePlaystate(e);
@@ -195,7 +201,7 @@ audio.addEventListener('timeupdate', (e) => {
     if (tmp == dur) {
         currentTime.innerHTML = "00:00";
         progressfor.style.width = "0%"
-        changePlaystate(e);
+        next(e);
     }
 });
 
