@@ -59,6 +59,7 @@ $(document).ready(function () {
             document.querySelector('#track' + field).children[0].style.backgroundImage = cover;
             if (field == 0)
                 audio.src = srcNode.src;
+                audio.load();
         });
     });
 });
@@ -78,13 +79,41 @@ menu.addEventListener('click', () => {
     mShowing = !mShowing;
 });
 
+function playstate(e) {
+    if (album.className.search('play-state') == -1)
+        return true
+    if (e.target.className.search('next') != -1)
+        return true
+    if (e.target.className.search('prev') != -1)
+        return true
+    if (e.type == 'keydown' && (e.code == 'KeyN' || e.code == 'KeyP'))
+        return true
+    try {
+        if (e.target.parentElement.parentElement.className.search('tracker') != -1)
+            return true
+        if (e.target.parentElement.parentElement.className.search('song') != -1)
+            return true
+    }
+    catch (e) {
+        return false;
+    }
+    return false
+};
+
+audio.addEventListener('loadeddata', () => {
+    var tmp = audio.duration;
+    var min = tmp / 60 | 0;
+    if (min < 10) min = "0" + min;
+    var sec = tmp % 60 | 0;
+    if (sec < 10) sec = "0" + sec;
+    duration.innerHTML = min + ":" + sec;
+});
+
 function changePlaystate(e) {
-    var data = playbtn.className;
+    // console.log(e.target.parentElement.parentElement);
     // console.log(e.target.className.search('next'));
-    if (e.target.className.search('next') != -1
-        || e.target.className.search('prev') != -1
-        || e.target.className.search('track') != -1
-        || data.search('pause') == -1) {
+    let play = playstate(e);
+    if (play === true) {
         playbtn.classList.remove('play');
         playbtn.classList.add('pause');
         // album.classList.add('animate');
@@ -92,12 +121,6 @@ function changePlaystate(e) {
         album.classList.add('play-state');
         audio.play();
 
-        var tmp = audio.duration;
-        var min = tmp / 60 | 0;
-        if (min < 10) min = "0" + min;
-        var sec = tmp % 60 | 0;
-        if (sec < 10) sec = "0" + sec;
-        duration.innerHTML = min + ":" + sec;
         songContainer.children[0].innerHTML = document.querySelector('#track' + currentTrack).children[1].children[0].children[0].innerHTML;
         // document.querySelector('#track' + currentTrack).children[0].style.animation = "rotateCover 3s linear infinite running";
 
@@ -117,7 +140,7 @@ function next(e) {
         currentTrack = 0;
     var name = document.querySelector('#track' + currentTrack).children[2].src;
     audio.src = '/tracks/' + name.substring(name.lastIndexOf('/') + 1);
-    loadAud();
+    audio.load();
     changePlaystate(e);
 }
 
@@ -127,34 +150,25 @@ function prev(e) {
         currentTrack = totalcnt - 1;
     var name = document.querySelector('#track' + currentTrack).children[2].src;
     audio.src = '/tracks/' + name.substring(name.lastIndexOf('/') + 1);
-    loadAud();
+    audio.load();
     changePlaystate(e);
 }
 
 window.addEventListener('keydown', (e) => {
-    console.log(e.code)
-    e.preventDefault();
     if (e.code == "Space") {
+        e.preventDefault();
         changePlaystate(e);
     }
-    if(e.code == "KeyN") {
+    if (e.code == "KeyN") {
+        e.preventDefault();
         next(e);
     }
     if (e.code == "KeyP") {
+        e.preventDefault();
         prev(e);
     }
 })
 playbtn.addEventListener('click', changePlaystate)
-playbtn.addEventListener('keydown', (e) => {
-    if (e.keyCode == 32) {
-        e.preventDefault();
-        changePlaystate(e);
-    }
-})
-function loadAud() {
-    audio.load();
-    audio.pause();
-}
 
 nextbtn.addEventListener('click', next);
 
@@ -181,7 +195,7 @@ audio.addEventListener('timeupdate', (e) => {
     if (tmp == dur) {
         currentTime.innerHTML = "00:00";
         progressfor.style.width = "0%"
-        changePlaystate();
+        changePlaystate(e);
     }
 });
 
