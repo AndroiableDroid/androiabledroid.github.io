@@ -14,6 +14,7 @@ let mediacontainer = document.querySelector('.media-container');
 let container = document.querySelector('.container');
 let songContainer = document.querySelector('.song-name');
 
+let rotate = [0, false];
 let totalcnt = 0;
 let currentTrack = 0;
 let dur_length = "";
@@ -94,23 +95,31 @@ audio.addEventListener('loadeddata', () => {
 
 function playstate(e) {
     if (album.className.search('play-state') == -1) return true
-    if (e.target.className.search('next') != -1)    return true
-    if (e.target.className.search('prev') != -1)    return true
-    if (e.type == 'keydown' && (e.code == 'KeyN' || e.code == 'KeyP'))  return true
+    if (e.target.className.search('next') != -1) return true
+    if (e.target.className.search('prev') != -1) return true
+    if (e.type == 'keydown' && (e.code == 'KeyN' || e.code == 'KeyP')) return true
     try {
         if (e.target.parentElement.parentElement.className.search('tracker') != -1) return true
-        if (e.target.parentElement.parentElement.className.search('song') != -1)    return true
+        if (e.target.parentElement.parentElement.className.search('song') != -1) return true
     }
     catch (e) { return false; }
-    if (e.target.tagName == 'AUDIO')    return true
+    if (e.target.tagName == 'AUDIO') return true
     return false
+}
+
+function rotateActive(track, rotate) {
+
+    track.style.animation = rotate ? "rotateCover 3s linear infinite running" : "none";
 }
 
 
 function changePlaystate(e) {
     setTimeout(function () {
         duration.innerHTML = dur_length;
+        track = document.querySelector('#track' + currentTrack);
         let play = playstate(e);
+        if (rotate[1] == true)
+            rotateActive(document.querySelector('#track' + rotate[0]).children[0], false);
         if (play === true) {
             playbtn.classList.remove('play');
             playbtn.classList.add('pause');
@@ -119,10 +128,13 @@ function changePlaystate(e) {
             album.classList.add('play-state');
             audio.play();
 
-            songContainer.children[0].innerHTML = document.querySelector('#track' + currentTrack).children[1].children[0].children[0].innerHTML;
-            songContainer.children[1].innerHTML = document.querySelector('#track' + currentTrack).children[2].innerText;
+            songContainer.children[0].innerHTML = track.children[1].children[0].children[0].innerHTML;
+            songContainer.children[1].innerHTML = track.children[2].innerText;
             if (songContainer.children[1].innerHTML == "Unknown")
                 songContainer.children[1].innerHTML = ""
+            rotateActive(track.children[0], true);
+            rotate[0] = currentTrack;
+            rotate[1] = true;
             // document.querySelector('#track' + currentTrack).children[0].style.animation = "rotateCover 3s linear infinite running";
 
         } else {
@@ -132,11 +144,14 @@ function changePlaystate(e) {
             album.classList.remove('play-state');
             // document.querySelector('#track' + currentTrack).children[0].style.animation = "none";
             audio.pause();
+            rotateActive(track.children[0], false);
         }
     }, 100);
 }
 
 function next(e) {
+    track = document.querySelector('#track' + currentTrack);
+    rotateActive(track.children[0], false);
     currentTrack += 1;
     if (currentTrack >= totalcnt)
         currentTrack = 0;
@@ -147,6 +162,8 @@ function next(e) {
 }
 
 function prev(e) {
+    track = document.querySelector('#track' + currentTrack);
+    rotateActive(track.children[0], false);
     currentTrack -= 1;
     if (currentTrack < 0)
         currentTrack = totalcnt - 1;
