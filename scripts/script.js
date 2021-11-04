@@ -13,6 +13,7 @@ let currentTime = document.querySelector('.tmleft');
 let mediacontainer = document.querySelector('.media-container');
 let container = document.querySelector('.container');
 let songContainer = document.querySelector('.song-name');
+let head = document.head.getElementsByTagName('title')[0];
 
 let rotate = [0, false];
 let totalcnt = 0;
@@ -135,6 +136,7 @@ function changePlaystate(e) {
             rotateActive(track.children[0], true);
             rotate[0] = currentTrack;
             rotate[1] = true;
+            head.innerHTML = songContainer.children[0].innerHTML;
             // document.querySelector('#track' + currentTrack).children[0].style.animation = "rotateCover 3s linear infinite running";
 
         } else {

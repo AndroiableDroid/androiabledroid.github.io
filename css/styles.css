@@ -142,7 +142,7 @@ body {
 }
 
 .track:hover .cover {
-  animation: rotateCover 3s linear infinite running;
+  animation: rotateCover 3s linear infinite running !important;
 }
 
 @keyframes rotateCover {
