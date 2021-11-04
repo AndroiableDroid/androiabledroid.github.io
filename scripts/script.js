@@ -94,7 +94,19 @@ audio.addEventListener('loadeddata', () => {
     dur_length = min + ":" + sec;
 });
 
+navigator.mediaSession.setActionHandler("play", _ => {
+    changePlaystate(true);
+});
+navigator.mediaSession.setActionHandler("pause", _ => {
+    changePlaystate(false);
+});
+// navigator.mediaSession.setActionHandler("previoustrack", _ => { audio.src = /* som/e URL */; });
+// navigator.mediaSession.setActionHandler("nexttrack", _ => { audio.src = /* some URL */; });
+navigator.mediaSession.setActionHandler("stop", _ => { audio.src = ''; });
+navigator.mediaSession.setActionHandler("seekto", (e) => { audio.currentTime = e.seekTime; });
+
 function playstate(e) {
+    if (e === true) return true;
     if (album.className.search('play-state') == -1) return true
     if (e.target.className.search('next') != -1) return true
     if (e.target.className.search('prev') != -1) return true
@@ -109,7 +121,6 @@ function playstate(e) {
 }
 
 function rotateActive(track, rotate) {
-
     track.style.animation = rotate ? "rotateCover 3s linear infinite running" : "none";
 }
 
@@ -118,6 +129,11 @@ function changePlaystate(e) {
     setTimeout(function () {
         duration.innerHTML = dur_length;
         track = document.querySelector('#track' + currentTrack);
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: track.children[1].children[0].children[0].innerText,
+            album: track.children[1].children[1].children[0].innerText,
+            artist: track.children[2].innerText
+        });
         let play = playstate(e);
         if (rotate[1] == true)
             rotateActive(document.querySelector('#track' + rotate[0]).children[0], false);
