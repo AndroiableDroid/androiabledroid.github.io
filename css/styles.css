@@ -129,8 +129,11 @@ body {
 }
 
 .cover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  height: 100%;
+  height: 87.35%;
   background-size: 100%;
   border-radius: 100%;
   background-position: center;
@@ -174,8 +177,9 @@ source {
   border-radius: 10px;
   box-shadow: inherit;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   cursor: pointer;
 }
 
