@@ -73,6 +73,7 @@ menu.addEventListener('click', () => {
     if (!mShowing) {
         slider.classList.add("translate");
         menu.classList.add('open');
+        if (screen.width <= 720)
         mediacontainer.style.transform = "translateX(200px)";
     }
     else {
