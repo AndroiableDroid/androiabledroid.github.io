@@ -31,8 +31,8 @@ jobs:
           git config --global user.email "mohd.faraz.abc@gmail.com"
           git config --global user.name "Mohd Faraz"
           git add tracks/tracks.json
-          git commit -s -m "new songs added"
-          git push
-          git add .
-          git commit -s -m "Remove Malicious unwanted files present in form of songs"
-          git push
+          git commit -s -m "new songs added" || true
+          git push || true
+          git add tracks || true
+          git commit -s -m "Remove Malicious unwanted files present in form of songs" || true
+          git push || true
